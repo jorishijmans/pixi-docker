@@ -62,7 +62,7 @@ jobs:
     steps:
     - name: Checkout source
       uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-      
+
     - name: Set image variables
       id: image-variables
       env:
@@ -101,7 +101,7 @@ jobs:
       uses: docker/metadata-action@c1e51972afc2121e065aed6d45c65596fe445f3f # v5.8.0
       with:
         images: |-
-          ghcr.io/prefix-dev/pixi
+          ghcr.io/jorishijmans/pixi
         flavor: latest=false
         # latest
         # base-image
@@ -148,7 +148,7 @@ jobs:
       uses: docker/scout-action@v1
       with:
         command: cves
-        image: ghcr.io/prefix-dev/pixi:${{ needs.version.outputs.new-version }}-${{ steps.image-variables.outputs.tag }}
+        image: ghcr.io/jorishijmans/pixi:${{ needs.version.outputs.new-version }}-${{ steps.image-variables.outputs.tag }}
         only-severities: critical,high
         exit-code: true
     - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4
@@ -159,11 +159,11 @@ jobs:
       run: |
         docker images
         # Test the pixi binary is available
-        docker run --rm ghcr.io/prefix-dev/pixi:${{ needs.version.outputs.new-version }}-${{ steps.image-variables.outputs.tag }} pixi --version
+        docker run --rm ghcr.io/jorishijmans/pixi:${{ needs.version.outputs.new-version }}-${{ steps.image-variables.outputs.tag }} pixi --version
         # Test end-to-end pixi workflow
-        docker run --rm ghcr.io/prefix-dev/pixi:${{ needs.version.outputs.new-version }}-${{ steps.image-variables.outputs.tag }} sh -c "mkdir /app && cd /app && pixi init && pixi add python && pixi run python --version"
+        docker run --rm ghcr.io/jorishijmans/pixi:${{ needs.version.outputs.new-version }}-${{ steps.image-variables.outputs.tag }} sh -c "mkdir /app && cd /app && pixi init && pixi add python && pixi run python --version"
         # Test pixi global binaries are in PATH
-        docker run --rm ghcr.io/prefix-dev/pixi:${{ needs.version.outputs.new-version }}-${{ steps.image-variables.outputs.tag }} sh -c "pixi global install rsync && rsync --version"
+        docker run --rm ghcr.io/jorishijmans/pixi:${{ needs.version.outputs.new-version }}-${{ steps.image-variables.outputs.tag }} sh -c "pixi global install rsync && rsync --version"
 
     - name: Image digest
       run: echo ${{ steps.build.outputs.digest }}
