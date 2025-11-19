@@ -71,7 +71,10 @@ jobs:
         import os
 
         base_image = "${{ matrix.base-image }}"
-        if base_image.startswith("nvidia/cuda"):
+        # Split off any digest
+        ref, _, digest = base_image.partition("@")  # "debian:bookworm-slim", "sha256:...", etc.
+
+        if ref.startswith("nvidia/cuda"):
             code_names = {
                 "22.04": "jammy",
                 "20.04": "focal",
@@ -79,15 +82,21 @@ jobs:
                 "24.10": "oracular",
                 "25.04": "plucky"
             }
-            ubuntu_version_number = base_image.split("-ubuntu")[-1]
-            base_tag = base_image.split(":")[-1]
+            ubuntu_version_number = ref.split("-ubuntu")[-1]
+            base_tag = ref.split(":")[-1]
             cuda_version = base_tag.split("-")[0]
             tag = f"{code_names[ubuntu_version_number]}-cuda-{cuda_version}"
             platforms = "linux/amd64,linux/arm64"
         else:
-            tag = base_image.split(":")[-1]
+            # Tag based on the *tag* part only, without digest.
+            tag = ref.split(":")[-1]
             platforms = "linux/amd64,linux/arm64"
-        is_default = "true" if base_image == "${{ env.DEFAULT_BASE_IMAGE }}" else "false"
+
+        # Compare the digest-free ref to DEFAULT_BASE_IMAGE
+        if ref == "${{ env.DEFAULT_BASE_IMAGE }}":
+            is_default = "true"
+        else:
+            is_default = "false"
 
         GITHUB_OUTPUT = os.environ["GITHUB_OUTPUT"]
         with open(GITHUB_OUTPUT, "a") as f:
@@ -95,7 +104,7 @@ jobs:
             f.write(f"platforms={platforms}\n")
             f.write(f"is-default={is_default}\n")
       shell: python
-
+      
     - name: Get docker metadata
       id: metadata
       uses: docker/metadata-action@c1e51972afc2121e065aed6d45c65596fe445f3f # v5.8.0
