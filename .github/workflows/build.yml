@@ -40,18 +40,21 @@ jobs:
       matrix:
         base-image:
          # https://hub.docker.com/_/debian
-         - debian:bookworm-slim # 12
+         # https://hub.docker.com/layers/library/debian/bookworm-slim/
+         - debian:bookworm-slim@sha256:b4aa902587c2e61ce789849cb54c332b0400fe27b1ee33af4669e1f7e7c3e22f # 12
          - debian:bookworm # 12
          - debian:bullseye-slim # 11
          - debian:bullseye # 11
          # https://hub.docker.com/_/ubuntu
-         - ubuntu:plucky # 25.04
-         - ubuntu:oracular # 24.10
-         - ubuntu:noble # 24.04
-         - ubuntu:jammy # 22.04
-         - ubuntu:focal # 20.04
-         # https://hub.docker.com/r/nvidia/cuda
-         - nvidia/cuda:12.9.1-base-ubuntu24.04
+         # https://hub.docker.com/layers/library/ubuntu/plucky/
+         - ubuntu:plucky@sha256:27771fb7b40a58237c98e8d3e6b9ecdd9289cec69a857fccfb85ff36294dac20 # 25.04
+         # https://hub.docker.com/layers/library/ubuntu/oracular/
+         - ubuntu:oracular@sha256:cdf755952ed117f6126ff4e65810bf93767d4c38f5c7185b50ec1f1078b464cc # 24.10
+         # https://hub.docker.com/layers/library/ubuntu/noble/
+         - ubuntu:noble@sha256:c35e29c9450151419d9448b0fd75374fec4fff364a27f176fb458d472dfc9e54 # 24.04
+         # https://hub.docker.com/layers/library/ubuntu/jammy/
+         - ubuntu:jammy@sha256:104ae83764a5119017b8e8d6218fa0832b09df65aae7d5a6de29a85d813da2fb # 22.04
+         # https://hub.sha256:104ae83764a5119017b8e8d6218fa0832b09df65aae7d5a6de29a85d813da2fb2.9.1-base-ubuntu24.04
          - nvidia/cuda:12.9.1-base-ubuntu22.04
          - nvidia/cuda:12.9.1-base-ubuntu20.04
          - nvidia/cuda:13.0.0-base-ubuntu24.04
