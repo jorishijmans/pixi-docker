@@ -151,7 +151,6 @@ jobs:
         image: ghcr.io/jorishijmans/pixi:${{ needs.version.outputs.new-version }}-${{ steps.image-variables.outputs.tag }}
         only-severities: critical,high
         exit-code: true
-    - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4
 
     - name: Run tests
       # # Image is pushed; pull and run tests against the pushed tag because buildx does not support outputting the image.
