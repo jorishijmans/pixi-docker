@@ -143,6 +143,12 @@ jobs:
         name: ${{ steps.image-variables.outputs.tag }}
         path: ${{ steps.metadata.outputs.bake-file }}
 
+    - name: Authenticate with Docker (Scout)
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USER }}    # Docker Hub username with Scout
+        password: ${{ secrets.DOCKER_PAT }}     # Docker Hub PAT
+
     - name: Run Docker Scout CVE scan
       if: needs.version.outputs.push == 'true'
       uses: docker/scout-action@v1
