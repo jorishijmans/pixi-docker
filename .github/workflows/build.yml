@@ -27,7 +27,7 @@ jobs:
           version-extraction-override: 'regex:ARG PIXI_VERSION=(.*)'
       - name: Determine if pushing images
         id: push
-        run: echo push=${{ steps.version-metadata.outputs.changed == 'true' && github.event_name == 'push' && github.ref_name == 'main' }} >> $GITHUB_OUTPUT
+        run: echo push=${{ github.event_name == 'push' && github.ref_name == 'main' }} >> $GITHUB_OUTPUT
 
   build:
     needs: version
